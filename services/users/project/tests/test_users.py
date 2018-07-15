@@ -1,17 +1,18 @@
-#services/users/project/tests/test_users.py
+# services/users/project/tests/test_users.py
 
 import json
 import unittest
-
 from project.tests.base import BaseTestCase
 from project import db
 from project.api.models import User
+
 
 def add_user(username, email):
     user = User(username=username, email=email)
     db.session.add(user)
     db.session.commit()
     return user
+
 
 class TestUserService(BaseTestCase):
     """Tests for Users Service."""
@@ -167,6 +168,7 @@ class TestUserService(BaseTestCase):
             self.assertIn(b'<h1>All Users</h1>', response.data)
             self.assertNotIn(b'<p>No users!</p>', response.data)
             self.assertIn(b'michael', response.data)
-    
+
+
 if __name__ == '__main__':
     unittest.main()
