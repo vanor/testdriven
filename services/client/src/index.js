@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import UserList from './components/UsersList';
+import AddUSer from './components/AddUser';
 
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            users: []
+            users: [],
+            username: '',
+            email: '',
         };
+        this.handleChange = this.handleChange.bind(this);
     };
     componentDidMount() {
         this.getUsers();
@@ -17,6 +22,16 @@ class App extends Component {
         .then((res) => { this.setState({ users: res.data.data.users }); })
         .catch((err) => { console.log(err); });
     };
+    addUser(event) {
+        event.preventDefault();
+        console.log('sanity check!');
+        console.log(this.state);
+    };
+    handleChange(event) {
+        const obj ={};
+        obj[event.target.name] = event.target.value;
+        this.setState(obj);
+    };
     render() {
         return (
             <div className="container">
@@ -25,16 +40,12 @@ class App extends Component {
                         <br/>
                         <h1>All Users</h1>
                         <hr/><br/>
-                        {
-                            this.state.users.map((user) => {
-                                return (
-                                    <h4
-                                       key={user.id}
-                                       class="card card-body bg-light">
-                                        {user.username}</h4>
-                                )
-                            })
-                        }
+                        <AddUSer username={this.state.username}
+                            email={this.state.email}
+                            addUser={this.addUser}
+                            handleChange={this.handleChange}/>
+                        <br/>
+                        <UserList users={this.state.users}/>
                     </div>
                 </div>
             </div>
